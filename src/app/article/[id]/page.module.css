@@ -1,0 +1,55 @@
+
+
+.header
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 48px;
+}
+
+.header p
+{
+    margin-top: 8px;
+}
+
+
+
+.banner
+{
+    width: 100%;
+    background-color: #ddd;
+    height: 300px;
+    margin-top: 18px;
+    position: relative;
+    animation: show 0.8s;
+}
+
+.banner img
+{
+    object-fit: cover;
+}
+
+.content
+{
+    margin-top: 25px;
+    margin-bottom: 60px;
+    animation: show 1s;
+}
+
+.content h2
+{
+    margin-top: 18px;
+}
+
+@keyframes show {
+    0%{
+      opacity: 0;
+      transform: translateY(30px);
+    }
+  
+    100%{
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }

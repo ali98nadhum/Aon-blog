@@ -1,95 +1,55 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+
+import { Container } from "@/components/container/Container";
+import styles from "./page.module.css";
+import { Header } from "@/components/header/Header";
+import { Card } from "@/components/Card/Card";
+import { Footer } from "@/components/Footer/Footer";
+import { useEffect, useState } from "react";
+import { Loader } from "@/components/loader/Loader";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  // For get all blogs
+  const [blog, setBlog] = useState([]);
+
+  const getBlog = () => {
+    setLoading(true);
+    fetch("https://api.slingacademy.com/v1/sample-data/blog-posts")
+      .then((res) => res.json())
+      .then((data) => {
+        setBlog(data.blogs);
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    getBlog();
+  }, []);
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+      <Header />
+      <div className={styles.banner}>
+        <div className={styles.overlay}>
+          <Container>
+            <div className={styles.title}>
+              <h1>Simple Blog.</h1>
+              <p>A blog created by Aon 2023</p>
+            </div>
+          </Container>
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <Container>
+        {loading && <Loader />}
+        <div className={styles.grid}>
+          {blog.map((item, index) => (
+            <Card key={index} blog={item} />
+          ))}
+        </div>
+      </Container>
+      <Footer />
     </main>
-  )
+  );
 }
